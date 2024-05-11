@@ -84,14 +84,14 @@ export async function POST(request:Request ) {
             success : true ,
             message : 'User registered successfully . Please verify your email' 
         },{
-            status : 400 ,
+            status : 200 ,
         })
 
-    } catch (error) {
+    } catch (error:any) {
         console.log('Error registering user',error)
         return Response.json({
             success: false,
-            message: 'Error registering user'
+            message: `Error registering user :: ${error.message}`
         },{
             status : 500
         })
