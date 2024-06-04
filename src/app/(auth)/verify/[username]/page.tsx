@@ -1,39 +1,49 @@
-// file path: pages/verify.js
-
 'use client'
-
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
-import axios from 'axios'
+import { verifySchema } from '@/schemas/verifySchema'
+import { ApiResponse } from '@/types/ApiResponse'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios, { AxiosError } from 'axios'
 import { Loader2 } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 function VerifyPage() {
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState('')
-  const { username } = useParams()
+  const { username } = useParams<{username:string}>()
+
+  const form = useForm<z.infer<typeof verifySchema>>({
+    resolver : zodResolver(verifySchema),
+  })
 
 
-  const onSubmit = async () => {
+  const onSubmit = async (data : z.infer<typeof verifySchema>) => {
     setLoading(true)
     try {
       const response = await axios.post(`/api/verify-code`, {
         username,
-        code
+        code : data.code
       })
-      console.log(response)
       toast({
         title: response.status < 300 ? "Success" : "Failed" ,
         description: response?.data.message, 
       })
-    } catch (error) {
-      console.error("Error:", error : any)
+      router.replace("/sign-in")
+    } catch (error: any) {
+      console.error("Error:", error )
+      const axiosError = error as AxiosError<ApiResponse>
+      let errMessage = axiosError.response?.data.message
       toast({
         title: error?.status < 300 ? "Success" : "Failed" ,
-        description: error?.response?.data?.message || error.message, 
+        description: errMessage || error.message, 
         variant: "destructive"
-
       })
     } finally {
       setLoading(false)
@@ -47,26 +57,39 @@ function VerifyPage() {
           <h1 className="text-3xl font-bold">Verify Your Account</h1>
           <p className="mb-4">Enter the verification code sent to your email</p>
         </div>
-        <div>
-          <p className="text-center mb-4">{`Verification for: ${username}`}</p>
-          <Input
-          placeholder="Enter verification code" 
-          onChange={(e) => setCode(e.target.value)} 
-          className='my-10'
-          max={6}
-          />
-          <button 
-            onClick={onSubmit} 
-            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            disabled={loading}
-          >
-            {loading ? (
-              <Loader2 className="h-5 w-5 animate-spin mx-auto" />
-            ) : (
-              'Submit'
-            )}
-          </button>
-        </div>
+        {/* //Form Start here */}
+        <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <FormField
+         name="code"
+         control={form.control}
+         render={({ field }) => (
+           <FormItem>
+             <FormLabel>Please enter your code</FormLabel>
+             <FormControl>
+             <Input
+                  placeholder="Enter verification code" 
+                  className='my-10'
+                  {...field}
+              />
+             </FormControl>
+             <FormMessage />
+           </FormItem>
+         )}
+         />
+         <Button 
+                type='submit'
+                disabled={loading}
+                className={"w-full"}
+              >
+                {loading ? (
+                  <Loader2 className="h-5 w-5 animate-spin mx-auto" />
+                ) : (
+                  'Submit'
+                )}
+          </Button>
+        </form>
+        </Form>
       </div>
     </div>
   )
