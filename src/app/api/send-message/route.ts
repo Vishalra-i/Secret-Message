@@ -27,7 +27,7 @@ export async function POST(request : Request) {
             )
         }
 
-        const newMessage = {content , createdAt : new Date()}
+        const newMessage = {Content : content , createdAt : new Date()}
         user.messages.push(newMessage as Message)
         await user.save()
     }catch (error) {
