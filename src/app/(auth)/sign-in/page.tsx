@@ -19,7 +19,7 @@ import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
 
 
-const page = () => {
+const Page = () => {
   
   const [isSubmitting , setIsSubmitting] = useState(false)
   const router = useRouter();
@@ -37,35 +37,44 @@ const page = () => {
   
   //Handle on submit
   const onSubmit = async (data : z.infer<typeof signInSchema>)=> {
-     const result = await signIn('credentials' , {
-      redirect : false ,
-      identifier : data.identifier ,
-      password : data.password
-     })
-     if(result?.error){
-       if(result.error === 'CredentialsSignin'){
-         toast({
-           title: "Invalid credentials",
-           description: "Please check your email and password",
-           variant: "destructive",
-         })
-       }else{
-         toast({
-           title: "Error",
-           description: result.error ,
-           variant: "destructive",
-         })
-       }
-     }
-     if(result?.url){
-      toast({
-        title: "Success",
-        description: "You have successfully logged in",
-        variant: "default",
+    setIsSubmitting(true)
+     try {
+      const result = await signIn('credentials' , {
+       redirect : false ,
+       identifier : data.identifier ,
+       password : data.password
       })
-       router.replace("/dashboard")
+      if(result?.error){
+        if(result.error === 'CredentialsSignin'){
+          toast({
+            title: "Invalid credentials",
+            description: "Please check your email and password",
+            variant: "destructive",
+          })
+        }else{
+          toast({
+            title: "Error",
+            description: result.error ,
+            variant: "destructive",
+          })
+        }
+      }
+      if(result?.url){
+       toast({
+         title: "Success",
+         description: "You have successfully logged in",
+         variant: "default",
+       })
+        router.replace("/dashboard")
+      }
+     } catch (error) {
+         console.log(error)
+     }finally{
+       setIsSubmitting(false)
      }
   }
+
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -98,7 +107,7 @@ const page = () => {
                      <FormItem>
                        <FormLabel>Password</FormLabel>
                        <FormControl>
-                          <Input placeholder="password" {...field}  />
+                          <Input type={"password"} placeholder="password" {...field}  />
                        </FormControl>
                        <FormMessage />
                      </FormItem>
@@ -106,12 +115,11 @@ const page = () => {
                 />
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {
-                    isSubmitting ?<> <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please Wait </> : ('Signin')
+                    isSubmitting ?<> <Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please Wait </> : ('Login')
                   }
                 </Button>
              </form>
            </Form>
-
            <div className="text-center mt-4">
                <p>
                  Create new account {' '} 
@@ -126,4 +134,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

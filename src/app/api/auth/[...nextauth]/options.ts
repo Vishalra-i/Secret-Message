@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/dbConnect';
 import User from '@/model/User.model';
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -42,6 +43,8 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+  
+   
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -61,8 +64,8 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username;
       }
       return session;
-    },
-  },
+    } 
+  },   
   session: {
     strategy: 'jwt',
   },
@@ -70,4 +73,5 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/sign-in',
   },
-};
+  
+}

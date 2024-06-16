@@ -1,5 +1,4 @@
 'use client'
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useEffect , useState } from "react"
@@ -17,7 +16,7 @@ import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 
-const page = () => {
+const Signup = () => {
   const [username,setUsername] = useState('')
   const [usernameMessage , setUsernameMessage] = useState('')
   const [isCheckingUsername , setIsCheckingUsername] = useState(false)
@@ -80,13 +79,12 @@ const page = () => {
        setIsSubmitting(false)
      }
   }
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md ">
           {/* heading */}
            <div className="text-center">
-            <h1 className="text-4xl font-extrabold"> Join Mystrey Message</h1>
+            <h1 className="text-4xl font-extrabold"> Join Secret Message</h1>
             <p className="mb-4">Sign up to start your anonymous adventure</p>
            </div>
            {/* Form statrt here */}
@@ -162,4 +160,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Signup

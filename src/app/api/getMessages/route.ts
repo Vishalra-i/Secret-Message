@@ -34,10 +34,10 @@ export async function GET(request: Request) {
         if(!user || user.length === 0){
            return Response.json(
                {
-                   success : false ,
+                   success : true ,
                    message : 'No messages'
                },{
-                   status : 404
+                   status : 200
                }
            ) 
         }
