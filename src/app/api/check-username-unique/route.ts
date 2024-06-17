@@ -2,7 +2,6 @@ import dbConnect from "@/lib/dbConnect"
 import {z} from "zod"
 import { usernameValidation } from "@/schemas/signUpSchema"
 import UserModel from "@/model/User.model"
-import { use } from "react"
 
 
 const UsernameQuerySchema = z.object({
@@ -12,6 +11,7 @@ const UsernameQuerySchema = z.object({
 export async function GET(request : Request){
     await dbConnect()
     try {
+        console.log(request)
         const {searchParams} = new URL(request.url)
         const queryParam = {
             username : searchParams.get("username")

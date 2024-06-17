@@ -33,14 +33,14 @@ const UserSchema : Schema<User> = new Schema({
         type : String ,
         required : [true , "Username is required"],
         trim : true ,
-        unique : [true , "Username ia already taken"] ,
         lowercase : true ,
-        minLength : [4 , "Username must be at least 4 characters"]
+        minLength : [4 , "Username must be at least 4 characters"] ,
+        unique : true ,
     },
     email : {
         type : String ,
         required : [true , "Email is required"],
-        unique : true,
+        unique : true ,
         match: [/.+\@.+\..+/, 'Please use a valid email address'],
     },
     password : {

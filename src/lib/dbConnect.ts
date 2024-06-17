@@ -23,6 +23,6 @@ export default async function dbConnect(): Promise<void> {
 
    } catch (error) {
        console.log("Db connection failed ::" + error)
-       process.exit(1)
+    //    process.exit(1)
    }
 }
