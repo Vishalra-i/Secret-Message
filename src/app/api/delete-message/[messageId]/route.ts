@@ -24,8 +24,23 @@ export async function DELETE(request: Request , {params}:{params : {messageId : 
     }
 
     try{
+        const messageAvailable = await UserModel.findOne(
+            {_id : user?._id , 'messages._id' : messageId}
+        )
+
+        if(!messageAvailable){
+            return Response.json(
+                {
+                    success : false ,
+                    message : 'Message not found or already deleted'
+                },{
+                    status : 404
+                }
+            )
+        }
+
         const updateResult =  await UserModel.updateOne(
-            {id : user?._id},
+            {_id : user?._id},
             {$pull : {messages : {_id : messageId}}}
         )
 

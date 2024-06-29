@@ -22,7 +22,7 @@ function Dashboard() {
   const [profileURL, setProfileURL] = useState('');
 
   const onMessageDelete = (messageId: string) => {
-    setMessages(messages.filter((message) => message.id !== messageId));
+    setMessages(messages.filter((message) => message._id !== messageId));
   };
 
   const { data: session } = useSession();
@@ -56,6 +56,7 @@ function Dashboard() {
     setIsSwitchLoading(false);
     try {
       const response = await axios.get<ApiResponse>('/api/getMessages');
+      console.log(response)
       setMessages(response?.data?.messages || []);
       if (refresh) {
         toast({
