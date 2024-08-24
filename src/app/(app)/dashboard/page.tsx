@@ -10,7 +10,7 @@ import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 import { Message } from '@/model/User.model';
 import { Button } from '@/components/ui/button';
-import { Loader2, Loader2Icon, RefreshCcw } from 'lucide-react';
+import { Loader2, RefreshCcw } from 'lucide-react';
 import MessageCard from '@/components/MessageCard';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
@@ -21,11 +21,10 @@ function Dashboard() {
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
   const [profileURL, setProfileURL] = useState('');
 
+  const { data: session } = useSession();
   const onMessageDelete = (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
-
-  const { data: session } = useSession();
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -53,10 +52,8 @@ function Dashboard() {
 
   const fetchMessages = useCallback(async (refresh: boolean = false) => {
     setIsLoading(true);
-    setIsSwitchLoading(false);
     try {
       const response = await axios.get<ApiResponse>('/api/getMessages');
-      console.log(response)
       setMessages(response?.data?.messages || []);
       if (refresh) {
         toast({
@@ -73,25 +70,18 @@ function Dashboard() {
       });
     } finally {
       setIsLoading(false);
-      setIsSwitchLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (!session || !session.user) {
-      return;
-    }
-    fetchMessages();
-    fetchAcceptMessages();
-  }, [session, setValue, fetchAcceptMessages, fetchMessages]);
-
-  useEffect(() => {
     if (session && session.user) {
+      fetchMessages();
+      fetchAcceptMessages();
       const username = session.user.username;
       const baseURL = `${window.location.protocol}//${window.location.host}`;
       setProfileURL(`${baseURL}/u/${username}`);
     }
-  }, [session]);
+  }, [session, setValue, fetchAcceptMessages, fetchMessages]);
 
   const handleSwitchChange = async () => {
     try {
@@ -101,7 +91,7 @@ function Dashboard() {
       setValue('acceptMessages', !acceptMessages);
       toast({
         title: response.data.message,
-        variant: 'destructive',
+        variant: 'default',
       });
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -116,50 +106,52 @@ function Dashboard() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileURL);
     toast({
-      title: 'URL Copied ✅',
+      title: 'URL Copied',
       description: 'Copied to clipboard',
+      variant: 'default',
     });
   };
 
   if (!session || !session.user) {
     return (
       <div className="flex justify-center items-center h-screen w-full">
-        <Loader2Icon className="animate-spin w-12 h-12" />
+        <Loader2 className="animate-spin w-12 h-12" />
       </div>
     );
   }
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-[#4a80f5e5] rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-xl md:w-full max-w-6xl">
+      <h1 className="text-4xl font-extrabold text-white mb-6">User Dashboard</h1>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-white mb-3">Copy Your Unique Link</h2>
         <div className="flex flex-col sm:flex-row items-center gap-2">
           <input
             type="text"
             value={profileURL}
             disabled
-            className="input input-bordered w-full p-2 sm:mr-2"
+            className="input input-bordered w-full p-2 text-gray-900 rounded-lg"
           />
-          <Button onClick={copyToClipboard} className="w-full sm:w-auto">Copy</Button>
+          <Button onClick={copyToClipboard} className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-100">
+            Copy
+          </Button>
         </div>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-6 flex items-center">
         <Switch
           {...register('acceptMessages')}
           checked={acceptMessages}
           onCheckedChange={handleSwitchChange}
           disabled={isSwitchLoading}
         />
-        <span className="ml-2">Accept Messages: {acceptMessages ? 'On' : 'Off'}</span>
+        <span className="ml-2 text-white">Accept Messages: {acceptMessages ? 'On' : 'Off'}</span>
       </div>
-      <Separator />
+      <Separator className="mb-6 border-gray-300" />
 
       <Button
-        className="mt-4"
-        variant="outline"
+        className="mb-6 flex items-center justify-center bg-white text-blue-600 hover:bg-blue-100"
         onClick={(e) => {
           e.preventDefault();
           fetchMessages(true);
@@ -170,14 +162,16 @@ function Dashboard() {
         ) : (
           <RefreshCcw className="h-4 w-4" />
         )}
+        <span className="ml-2">Refresh Messages</span>
       </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
           messages.map((message) => (
             <MessageCard key={message._id} message={message} onMessageDelete={onMessageDelete} />
           ))
         ) : (
-          <p>No messages to display.</p>
+          <p className="text-white">No messages to display.</p>
         )}
       </div>
     </div>
