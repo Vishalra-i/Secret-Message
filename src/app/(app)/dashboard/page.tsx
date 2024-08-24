@@ -81,7 +81,7 @@ function Dashboard() {
       const baseURL = `${window.location.protocol}//${window.location.host}`;
       setProfileURL(`${baseURL}/u/${username}`);
     }
-  }, [session, setValue, fetchAcceptMessages, fetchMessages]);
+  }, [session, setValue,]);
 
   const handleSwitchChange = async () => {
     try {
