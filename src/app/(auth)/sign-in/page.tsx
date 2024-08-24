@@ -122,9 +122,14 @@ const Page = () => {
            </Form>
            <div className="text-center mt-4">
                <p>
+                <Link href="/forgot-password" >
+                   <span className="text-black font-bold my-5 text-lg">Forgot password ?</span>
+                </Link>
+               </p>
+               <p>
                  Create new account {' '} 
                 <Link href="/sign-up" >
-                   <span className="text-blue-400 font-bold">SignUp</span>
+                   <span className="text-blue-400 my-5 font-bold">Signup</span>
                 </Link>
                </p>
            </div>

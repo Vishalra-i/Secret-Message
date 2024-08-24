@@ -135,14 +135,14 @@ function Dashboard() {
 
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
-        <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row items-center gap-2">
           <input
             type="text"
             value={profileURL}
             disabled
-            className="input input-bordered w-full p-2 mr-2"
+            className="input input-bordered w-full p-2 sm:mr-2"
           />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button onClick={copyToClipboard} className="w-full sm:w-auto">Copy</Button>
         </div>
       </div>
 

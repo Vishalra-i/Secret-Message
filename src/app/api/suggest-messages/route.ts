@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 
 
 // Access your API key as an environment variable.
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const API_KEY : string  = process.env.GEMINI_API_KEY as string
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 
 export async function POST(req : Request) {

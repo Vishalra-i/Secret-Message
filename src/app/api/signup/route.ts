@@ -63,11 +63,13 @@ export async function POST(request:Request ) {
             await newUser.save()
         }
 
+        const emailType = "Verify" ;
         //send Verification email
         const emailResponse = await sendVerificationEmail(
             username ,
             email,
-            verifyCode
+            verifyCode ,
+            emailType
         )
 
         if(!emailResponse.success) {
