@@ -1,41 +1,47 @@
 import Image from "next/image";
+import Feature from "@/components/Feature.tsx";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen text-black">
-      <main className="flex flex-col items-center justify-center flex-1 p-6 text-center">
-        {/* Hero Section */}
-        <section className="mb-12">
-          <h1 className="text-5xl font-extrabold  mb-6">Bringing Creative Interiors to Life</h1>
-          <p className="text-xl mb-6">
-            Artville covers everything from seasonal décor to the latest design trends.
-          </p>
-          <div className="flex justify-center items-center space-x-6">
-            <button className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
-              Watch Video
-            </button>
-            <a href="#" className=" text-lg underline hover:text-teal-200">Explore More</a>
-            <a href="#" className=" text-lg underline hover:text-teal-200">Trending</a>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="relative w-full max-w-5xl flex flex-col items-center sm:flex-row text-center bg-gradient-to-r from-green-400 to-blue-600 p-10 rounded-lg shadow-2xl">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTmce0dRD3haQobowjl87TabSS35R_H9tdOpY1WWmNSqOvCH4bphGltTg&s"
-            alt="Decor"
-            className="w-full sm:w-1/2 rounded-lg mb-6 sm:mb-0 transform transition duration-500 hover:scale-105"
+  <>
+    <main className=" min-h-screen font-dm-sans text-black  bg-[url('/images/bg.avif')]  bg-cover bg-center relative hero-section p-0 flex flex-col"  >
+    <section className="mt-36 px-4 sm:px-6 lg:px-8 z-50">
+      <div className="flex flex-col items-center justify-center">
+        <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center">
+          Share Your Thoughts
+        </h3>
+        <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center highlight font-mono mt-2">
+          Anonymously
+        </h3>
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold max-w-[600px] mt-6 text-center">
+          Express yourself freely without revealing your identity. Our platform
+          ensures your privacy while connecting you with others.
+        </p>
+        <Link href='/sign-up'>
+        <button className="my-8 text-base sm:text-lg md:text-xl font-bold px-8 py-3 sm:px-10 sm:py-4 cursor-pointer rounded-full bg-gradient-to-l from-[#00c6ff] to-[#3275fa] transition-all duration-300 ease shadow-md hover:translate-y-[-2px] hover:shadow-indigo-500/40">
+          Start Messaging Now
+        </button>
+        </Link>
+        <span className="text-base sm:text-lg text-gray-500 mt-2 text-center">
+          Trusted by over 1 million users worldwide
+        </span>
+        <div
+          id="box"
+          className="w-full max-w-[300px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[900px] my-12 sm:my-16 lg:my-24 border-yellow-400 border-2"
+        >
+          <Image
+            src={"/images/bg.avif"}
+            width={400}
+            height={400}
+            alt="All secret message"
+            className="w-full h-auto object-cover"
           />
-          <div className="w-full sm:w-1/2 sm:pl-10">
-            <h2 className="text-3xl font-semibold mb-4 text-gray-800">Anonymous Messaging</h2>
-            <p className="text-lg text-gray-600 mb-4">Send messages without revealing your identity.</p>
-            <h2 className="text-3xl font-semibold mb-4 text-gray-800">Secure and Private</h2>
-            <p className="text-lg text-gray-600 mb-4">All messages are encrypted for your safety.</p>
-            <h2 className="text-3xl font-semibold mb-4 text-gray-800">Real-time Notifications</h2>
-            <p className="text-lg text-gray-600">Get notified as soon as you receive a message.</p>
-          </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </div>
+    </section>
+    </main>
+      <Feature/>
+    </>
   );
 }

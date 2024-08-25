@@ -29,9 +29,10 @@ import { useRef, useState } from 'react';
 type MessageCardsProps = {
   message: Message;
   onMessageDelete: (messageId: string) => void;
+  profileURL: string;
 };
 
-function MessageCard({ message, onMessageDelete }: MessageCardsProps) {
+function MessageCard({ message, onMessageDelete , profileURL }: MessageCardsProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -72,9 +73,9 @@ function MessageCard({ message, onMessageDelete }: MessageCardsProps) {
 
         const shareData = {
           files: filesArray,
-          title: 'Check out this message',
+          title: 'Send me annoymous message',
           text: 'Here is a message I wanted to share with you!',
-          url: 'https://yourwebsite.com', // Replace with your desired URL
+          url: profileURL ,
         };
 
         if (navigator.canShare && navigator.canShare(shareData)) {

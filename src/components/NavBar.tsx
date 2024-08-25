@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { User } from 'next-auth';
 import { Button } from './ui/button';
 import { Menu, X } from 'lucide-react';
+import Logo from './Logo.tsx';
 
 function NavBar() {
   const { data: session } = useSession();
@@ -17,36 +18,36 @@ function NavBar() {
   };
 
   return (
-    <nav className="p-4 md:p-6 shadow-md bg-white">
+    <nav className="p-4 md:p-6 bg-white">
       <div className="container mx-auto flex justify-between items-center">
-        <Link className="text-xl font-bold" href="/dashboard">
-          Secret Message🤫
+        <Link  href="/dashboard">
+          <Logo />
         </Link>
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="focus:outline-none">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <button onClick={toggleMenu} className="focus:outline-none" aria-label="Toggle Menu">
+            {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
           </button>
         </div>
-        <div className={`flex flex-col md:flex-row md:items-center bg-white absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto shadow-md md:shadow-none transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-full md:translate-x-0 opacity-0 md:opacity-100'}`}>
+        <div className={`flex flex-col md:flex-row  md:items-center absolute md:static z-20 top-16 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none transition-all duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-full md:translate-x-0 opacity-0 md:opacity-100'}`}>
           {session ? (
-            <div className="space-y-4 md:space-y-0 md:space-x-5 mt-4 md:mt-0 p-4 md:p-0">
+            <div className="space-y-4 md:space-y-0 md:space-x-5 mt-4 md:mt-0 p-4 md:p-0 w-full md:w-auto">
               <Link href="/dashboard">
                 <Button className="w-full md:w-auto font-semibold bg-blue-500 hover:bg-blue-300">
                   Dashboard
                 </Button>
               </Link>
-              <Button className="w-full md:w-auto font-semibold mt-5" onClick={() => signOut()}>Logout</Button>
+              <Button className="w-full md:w-auto font-semibold mt-5 md:mt-0" onClick={() => signOut()}>Logout</Button>
             </div>
           ) : (
-            <div className="space-y-4 md:space-y-0 md:space-x-5 mt-4 md:mt-0 p-4 md:p-0">
-              <Link href="/sign-up">
-                <Button className="w-full md:w-auto font-semibold bg-blue-500 hover:bg-blue-300">
-                  SignUp
+            <div className="space-y-4 md:space-y-0 md:space-x-5 mt-4 md:mt-0 p-4 md:p-0 w-full md:w-auto">
+              <Link href="/sign-in">
+                <Button className="w-full md:w-auto font-semibold mt-5 md:mt-0 bg-transparent text-black text-md hover:bg-transparent hover:text-lg p-0 mx-2 text-center">
+                  Login
                 </Button>
               </Link>
-              <Link href="/sign-in">
-                <Button className="w-full md:w-auto font-semibold hover:bg-blue-300 mt-5">
-                  Login
+              <Link href="/sign-up">
+                <Button className="w-full md:w-auto font-semibold bg-black text-white py-4 px-6 rounded-lg hover:bg-black/40">
+                  SignUp
                 </Button>
               </Link>
             </div>
