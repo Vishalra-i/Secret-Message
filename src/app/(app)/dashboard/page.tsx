@@ -168,7 +168,7 @@ function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
           messages.map((message) => (
-            <MessageCard key={message._id} message={message} onMessageDelete={onMessageDelete} profileURL />
+            <MessageCard key={message._id} message={message} onMessageDelete={onMessageDelete} profileURL={profileURL} />
           ))
         ) : (
           <p className="text-white">No messages to display.</p>

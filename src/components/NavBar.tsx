@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { User } from 'next-auth';
 import { Button } from './ui/button';
 import { Menu, X } from 'lucide-react';
-import Logo from './Logo.tsx';
+import Logo from './Logo';
 
 function NavBar() {
   const { data: session } = useSession();

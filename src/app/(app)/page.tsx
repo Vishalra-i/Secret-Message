@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Feature from "@/components/Feature.tsx";
 import Link from "next/link";
+import Feature from "@/components/Feature";
 
 export default function Home() {
   return (
